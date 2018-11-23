@@ -40,19 +40,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     'users',
     'goods',
     'DjangoUeditor',
     'trade',
     'user_operation',
     'xadmin',
-    'crispy_forms'
+    'crispy_forms',
+    'rest_framework',
+    'coreschema'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -141,3 +145,13 @@ AUTH_USER_MODEL = 'users.UserProfile'
 # 设置media媒体文件夹
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# REST_FRAMEWORK 配置
+REST_FRAMEWORK = {
+    # 分页
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 每页显示的个数
+    'PAGE_SIZE': 10,
+}
+
+CORS_ORIGIN_ALLOW_ALL = True

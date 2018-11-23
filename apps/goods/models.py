@@ -33,6 +33,9 @@ class GoodsCategory(models.Model):
     def __str__(self):
         return self.name
 
+    def get_sub_cat(self):
+        return self.sub_cat.all()
+
 
 class GoodsCategoryBrand(models.Model):
     """

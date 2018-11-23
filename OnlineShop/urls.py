@@ -16,11 +16,20 @@ Including another URLconf
 
 from django.urls import path, include
 from django.views.static import serve
+from rest_framework import routers
 from OnlineShop.settings import MEDIA_ROOT
+from rest_framework.documentation import include_docs_urls
+from goods import views
 import xadmin
+
+router = routers.DefaultRouter()
+router.register(r'categorys', views.CategoryViewSet, base_name="categorys")
+router.register(r'goods', views.GoodsListViewSet, base_name='goods')
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
     path('ueditor/', include('DjangoUeditor.urls')),
     path('media/<path:path>', serve, {'document_root':MEDIA_ROOT}),
+
+    path('', include(router.urls)),
 ]
