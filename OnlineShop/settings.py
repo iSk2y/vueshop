@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import sys
+import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -146,12 +147,32 @@ AUTH_USER_MODEL = 'users.UserProfile'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# 修改用户auth 自定义认证
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+)
+
 # REST_FRAMEWORK 配置
 REST_FRAMEWORK = {
     # 分页
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     # 每页显示的个数
     'PAGE_SIZE': 10,
+    # 配置jwt
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework.authentication.BasicAuthentication',
+            'rest_framework.authentication.SessionAuthentication',
+            'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        )
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# 有效期限
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',                       # JWT跟前端保持一致，比如“token”这里设置成JWT
+}
+
+# 云片网APIKEY
+APIKEY = "xxxxx327d4be01608xxxxxxxxxx"
