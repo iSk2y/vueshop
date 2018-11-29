@@ -4,7 +4,7 @@
 
 from rest_framework import serializers
 
-from .models import GoodsCategory, Goods
+from .models import GoodsCategory, Goods, GoodsImage
 
 
 class CategorySerializer3(serializers.ModelSerializer):
@@ -39,11 +39,19 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class GoodsImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GoodsImage
+        fields = ("image",)
+
+
 class GoodSerializer(serializers.ModelSerializer):
     """
     商品序列化
     """
     category = CategorySerializer()
+    # images是数据库中设置的related_name="images"
+    images = GoodsImageSerializer(many=True)
 
     class Meta:
         model = Goods

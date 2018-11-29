@@ -22,6 +22,7 @@ from OnlineShop.settings import MEDIA_ROOT
 from rest_framework.documentation import include_docs_urls
 from goods import views as gview
 from users import views as uview
+from user_operation import views as uoview
 import xadmin
 
 router = routers.DefaultRouter()
@@ -29,9 +30,13 @@ router.register(r'categorys', gview.CategoryViewSet, base_name="categorys")
 router.register(r'goods', gview.GoodsListViewSet, base_name='goods')
 router.register(r'code', uview.SmsCodeViewset, base_name='code')
 router.register(r'users',uview.UserViewSet, base_name='users')
+# 配置用户收藏的url
+router.register(r'userfavs', uoview.UserFavViewset, base_name="userfavs")
+
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
+    path('docs/', include_docs_urls(title='二歪求知')),
     path('ueditor/', include('DjangoUeditor.urls')),
     path('media/<path:path>', serve, {'document_root':MEDIA_ROOT}),
     # 为了和前端相同 改成login了

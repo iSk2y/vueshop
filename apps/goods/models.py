@@ -94,7 +94,7 @@ class GoodsImage(models.Model):
     商品轮播图
     """
     goods = models.ForeignKey(Goods, on_delete=models.CASCADE, verbose_name="商品", related_name="images")
-    image = models.ImageField(upload_to="", verbose_name="图片", null=True, blank=True)
+    image = models.ImageField(upload_to="goods/images/", verbose_name="图片", null=True, blank=True)
     add_time = models.DateTimeField("添加时间", default=datetime.now)
 
     class Meta:
