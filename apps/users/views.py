@@ -1,10 +1,13 @@
 from django.contrib.auth.backends import ModelBackend
-from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler
-from .serializers import SmsSerializer, UserRegSerializer
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+from .serializers import SmsSerializer, UserRegSerializer, UserDetailSerializer
 from utils.yunpian import YunPian
 from OnlineShop.settings import APIKEY
 from random import choice
@@ -73,12 +76,18 @@ class SmsCodeViewset(CreateModelMixin,viewsets.GenericViewSet):
             }, status=status.HTTP_201_CREATED)
 
 
-class UserViewSet(CreateModelMixin, viewsets.GenericViewSet):
+class UserViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, viewsets.GenericViewSet):
     """
-    用户注册视图
+    create:
+        用户注册
+    retrieve:
+        用户个人详细信息
+    update:
+        修改用户个人信息
     """
     serializer_class = UserRegSerializer
     queryset = User.objects.all()
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -97,3 +106,30 @@ class UserViewSet(CreateModelMixin, viewsets.GenericViewSet):
 
     def perform_create(self, serializer):
         return serializer.save()
+
+    def get_serializer_class(self):
+        """
+        动态选择序列化类，区分注册和详细
+        :return:
+        """
+        if self.action == 'retrieve':
+            return UserDetailSerializer
+        elif self.action == 'create':
+            return UserRegSerializer
+
+        return UserDetailSerializer
+
+    def get_permissions(self):
+        """
+        动态选择权限认证类
+        :return:
+        """
+        if self.action == 'retrieve' or self.action == 'update':
+            return [IsAuthenticated()]
+        else:
+            return []
+
+    # 虽然继承了Retrieve可以获取用户详情，但是并不知道用户的id，所有要重写get_object方法
+    # 重写get_object方法，就知道是哪个用户了
+    def get_object(self):
+        return self.request.user

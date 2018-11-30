@@ -32,11 +32,14 @@ router.register(r'code', uview.SmsCodeViewset, base_name='code')
 router.register(r'users',uview.UserViewSet, base_name='users')
 # 配置用户收藏的url
 router.register(r'userfavs', uoview.UserFavViewset, base_name="userfavs")
-
+# 用户留言
+router.register(r'messages', uoview.LeavingMessageViewset, base_name='messages')
+# 配置收货地址
+router.register(r'address', uoview.AddressViewset , base_name="address")
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
-    path('docs/', include_docs_urls(title='二歪求知')),
+    path('docs/', include_docs_urls(title='慕学生鲜')),
     path('ueditor/', include('DjangoUeditor.urls')),
     path('media/<path:path>', serve, {'document_root':MEDIA_ROOT}),
     # 为了和前端相同 改成login了
