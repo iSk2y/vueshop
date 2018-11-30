@@ -23,6 +23,7 @@ from rest_framework.documentation import include_docs_urls
 from goods import views as gview
 from users import views as uview
 from user_operation import views as uoview
+from trade import views as tviews
 import xadmin
 
 router = routers.DefaultRouter()
@@ -36,6 +37,10 @@ router.register(r'userfavs', uoview.UserFavViewset, base_name="userfavs")
 router.register(r'messages', uoview.LeavingMessageViewset, base_name='messages')
 # 配置收货地址
 router.register(r'address', uoview.AddressViewset , base_name="address")
+# 配置购物车URL
+router.register(r'shopcarts', tviews.ShoppingCartViewset, base_name="shopcarts")
+# 订单url
+router.register(r'orders', tviews.OrderViewset, base_name="orders")
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
