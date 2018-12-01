@@ -42,6 +42,10 @@ router.register(r'shopcarts', tviews.ShoppingCartViewset, base_name="shopcarts")
 # 订单url
 router.register(r'orders', tviews.OrderViewset, base_name="orders")
 
+router.register(r'banners', gview.BannerViewset, base_name="banners")
+# 首页系列商品展示url
+router.register(r'indexgoods', gview.IndexCategoryViewset, base_name="indexgoods")
+
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
     path('docs/', include_docs_urls(title='慕学生鲜')),

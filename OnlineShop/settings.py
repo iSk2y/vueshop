@@ -163,7 +163,16 @@ REST_FRAMEWORK = {
             'rest_framework.authentication.BasicAuthentication',
             'rest_framework.authentication.SessionAuthentication',
             'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        )
+        ),
+    # 限速设置
+    'DEFAULT_THROTTLE_CLASSES': (
+            'rest_framework.throttling.AnonRateThrottle',   # 未登陆用户
+            'rest_framework.throttling.UserRateThrottle'    # 登陆用户
+        ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '3/minute',         # 每分钟可以请求两次
+        'user': '5/minute'          # 每分钟可以请求五次
+    }
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -176,3 +185,8 @@ JWT_AUTH = {
 
 # 云片网APIKEY
 APIKEY = "xxxxx327d4be01608xxxxxxxxxx"
+
+
+REST_FRAMEWORK_EXTENSIONS = {
+    'DEFAULT_CACHE_RESPONSE_TIMEOUT': 5   #5s过期，时间自己可以随便设定
+}
