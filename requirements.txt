@@ -11,7 +11,7 @@ django-formtools==2.1
 django-guardian==1.4.9
 django-import-export==1.1.0
 django-reversion==3.0.2
-djangorestframework==3.9.0
+djangorestframework==3.11.2
 djangorestframework-jwt==1.11.0
 drf-extensions==0.4.0
 et-xmlfile==1.0.1
